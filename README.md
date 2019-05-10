@@ -2,11 +2,10 @@
 
 My work for the Berkeley CS186 Database Systems course.
 
-## Introduction (1-20-2015)
+## Introduction _1-20-2015_
 
 
-
-## Database Design: Entity-Relationship Models
+## Database Design: Entity-Relationship Models _2-24-2015_
 
 Describing Data: Data Models
 
@@ -22,4 +21,4 @@ The relational model occupies the middle ground between the very simple (ie usin
 
 There are three levels of abstraction in a database:
 
-![Three levels of Database Abstraction](https://github.com/paulghaddad/dotfiles/blob/master/images/bradfield/apis/three_levels_of_abstraction.png)
+![Three levels of Database Abstraction](https://github.com/paulghaddad/databases/blob/master/images/three_levels_of_abstraction.png)
