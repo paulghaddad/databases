@@ -1,143 +1,95 @@
-# Introduction to Database Systems
+# Databases
 
-My work for the Berkeley CS186 Database Systems course.
+* [Introduction to Database Systems]()
+* [Sorting, Hashing and Single Table Queries]()
+* [Lab: Implementing a Query Executor]()
+* [Lab: Implementing a File Format]()
+* [Indexes]()
+* [Joins]()
+* [The Relational Model and Query Optimization]()
+* [Concurrency]()
+* [Column Stores]()
+* [Log-Structured Merge Trees]()
+* [Distributed Databases]()
+* [Case Study]()
 
-## Introduction _1-20-2015_
+***
 
+## Introduction
 
-## Database Design: Entity-Relationship Models _2-24-2015_
+Most businesses store data, and most of those do so in a sophisticated database
+system. Better database engines have lead to increased business capabilities, so
+a few decades of market pressure has lead to highly capable, complex systems.
+But with great power comes great responsibility: misunderstanding database
+engines can be costly. This course provides a first look under the hood of
+database systems, to help give you the understanding needed to make wise
+choices.
 
-### Describing Data: Data Models
+## Recommended Resources
 
-* Data Model: A collection of concepts for describing data. It is an abstraction.
-* Schema: Description of a particular collection of data, using a given data model.
-* Relational Model of data:
-  * Main concept: relation (table), rows, columns
-  * Every relation has a schema
-    * Describes the columns
-    * Column names and domains (data types)
+We cover a lot of ground in this course, so its important that you complete the
+prework. We have done our best to keep it as short and focused as possible, so
+as to leave you with enough time to also work on your project. If any of the
+prework appears excessive, please ask us for clarification around where to focus
+your attention.
 
-The relational model occupies the middle ground between the very simple (ie using a key-value store) and the complex (ie a document store or json), where things are nested and you have to reason about trees.
+Much of the prework draws from a series of video lectures from the [Spring 2015
+session of
+CS186](https://archive.org/details/UCBerkeley_Course_Computer_Science_186), Joe Hellerstein’s databases course at Berkeley. We agree with
+past students of this course that Professor Hellerstein does an exceptional job
+of presenting the important high level concepts in database systems. Watching
+the lectures before class will give us more time to consolidate these concepts
+and extend them to our work and projects.
 
-### There are three levels of abstraction in a database:
+One unfortunate aspect of studying databases is that their are few good
+textbooks: those best placed to write great textbooks seem to be starting
+databases companies or taking lucrative positions in industry instead! As such,
+much of our suggested reading will be in the form of papers.
 
-![Three levels of Database Abstraction](https://github.com/paulghaddad/databases/blob/master/images/three_levels_of_abstraction.png)
+The one textbook we do reference is [Database Management Systems](https://smile.amazon.com/Database-Management-Systems-Raghu-Ramakrishnan/dp/0072465638/) by Ramakrishnan
+and Gehrke (R&G below). It is dated and often hard to follow, but it is
+sometimes more approachable than papers on the topic. Chapter numbers are for
+the third edition.
 
-Example:
- 
-* Conceptual Schema:
-  - Students(sid text, name text, login text, age integer, gpa float)
-  - Courses(cid text, cname text, credits integer)
-  - Enrolled(sid text, cid text, grade text)
-* Physical Schema:
-  - Relations stored as unordered files
-  - Index on first column of Students
-* External Schema (View):
-  - Course_Info(cid text, enrollment integer)
-  
-### Data Independence
+Many of our selected papers are [from the databases “Red
+Book”](http://www.redbook.io/), a collection of
+papers compiled and edited by Peter Bailis, Joe Hellerstein and Michael
+Stonebraker. It is a good source for more advanced papers beyond those suggested
+below.
 
-* Insulate applications from structure of data
-* Logical data independence:
-  - Protection from changes in _logical_ structure.
-* Physical data independence:
-  - Protection from changes in _physical_ structure.
-  
-Key point: this is important because databases and their associated application persist, and normally at different rates:
+> Database Management Systems by Ramakrishnan and Gehrke is one of the more
+popular undergraduate-level databases textbooks. It leaves a lot to be desired
+but some students have found it helpful as a supplement to our assigned
+prework. It is used at Berkeley and occasionally referenced in the CS186
+lectures.An alternative textbook is Database Systems: The Complete Book by Hector
+Garcia-Molina, Jeffrey D. Ullman and Jennifer Widom based on their course at
+Stanford. In both cases, we’d only suggest investing in one of these books if you
+particularly prefer textbooks over the material we’ve linked in the assigned
+prework.
 
-`dapp/dt << denv/dt` => the rate of change of your application is normally much slower than the rate of rate of your environment. Thus we want to make them independent so we can change one without affecting the other.
+## Course Exercises
 
-### Data Models
+Prior iterations of the course involved an ongoing project to build a simple
+relational database management system from scratch. Although some past students
+have found this project to be one of the highlights of this course, we’ve also
+encountered some challenges in structuring the course around such a project.
 
-* Connect concepts to bits.
-* Many models exist
-* We will focus on the relational model
-  - clean and common
-  - its a generalization of a simple key/value pairs
-* The Entity-Relationship model is also handy for design
-  - because it translates down to the Relational Model
-  
-Why focus on the relational model?
-* Most widely used
-* Other models exist (and co-exist)
-  - Legacy systems in older models
-  - Object-Relational mergers
-    - OO features provided by DBMS
-    - ORMs outside the DBMS
-  - XML/JSON, etc
-    - nested and semi-structured data
-    - Most relational engines now handle these to a degree
-    
-### Entity-Relationship Model
- 
-  * Relational model is a great formalism and a clearn system framework
-  * But it's a bit detailed at design time:
-    * a bit fussy for brainstorming
-    * hard to communicate to customers
-  * Entity-Relationship model is a popular "shim" over the relational model
-    * it's graphical and at a slightly higher level
-   
-#### Steps in Traditional DB Design (old style)
- 
-1. Requirements analysis
-  * user needs; what must the db do?
-2. Conceptual design
-  * high level description (often doen with the ER model)
-3. Logical design
-  * translate ER into DBMS data model (translate classes to actual CREATE statements, ie in migrations)
-4. Schema Refinement
-  * consistency and normalization
-5. Physical design: indexes, disk layout
-6. Security design: who accesses what, and how?
+This time, we will instead take a more targeted approach, with exercises that
+emphasize particularly interesting or educational components of a database
+system. However, if you’re still interested in building a simple database that
+works end-to-end, the two “Lab” sessions will cover most of the core
+functionality, and several subsequent sessions (e.g. Indexes, Joins) will
+suggest optional additional project steps.
 
-#### Conceptual Design
+For course exercises, our recommended approach is:
 
-* What are the entities and relationships?
-* What info about E's and R's should be in the DB?
-* What _integrity constraints_ (business rules) hold?
-* The ER diagram is the "schema"
-* Can map an ER diagram into a relational schema
-* Conceptual design is where the software/data engineering begins, ie in constructing _models_.
+* Consult prework readings or videos to develop a basic understanding of the topic;
+* Try to complete the exercise on your own, but make a note of any difficulties if you get stuck;
+* Attend class to discuss the general principles, your own approach, and any difficulties encountered; then,
+* Revisit and complete the exercise after class.
 
-#### Modern Pattern: "Schema on Use"
-
-* What about more agile, less governed environments?
-* Don't let the lack of schema prevent you from storing data
-  * just use binary, text, CSV, JSON, etc
-  * Can shove the data into a DBMS, or just a filesystem
-  * Most database engines can query files directly these days
-* Wrangle the data into shape _as needed_
-  * Essentially defining views over the raw data
-  * This amounts to database design, at the view level
-  * What about integrity constraints?
-    - Instead, define "anomoly indicator" columns to flag strange data -- or queries
-* Fits well with read/append-only data (ie log files)
-  * Eg, big data like Hadoop
-  * Less of a fit with udpate-heavy data
-* Analogous to strong vs. loose typing in programming languages
-
-#### ER Model Basics
-
-There are Entities and Relationships, that's it!
-
-* Entity
-  - A real-world object describes by a set of attribute values
-  
-* Entity Set: a collection of similar entities
-  - ie, all employees
-  - All entities in an entity set have the same attributes
-  - Each entity set has a _key_ that defines uniquely a specific entity in the entity set
-  - Each attribute has a _domain_ (data type)
-  
-![Employee ER Model]()
-
-* Relationship: association among two or more entities.
-  - Eg, Smith works in the Pharmacy department
-  - relationships can have their own attributes
-* Relationship Set: Collection of similar relationships
-  - An n-ary relationship set `R` relates `n` entity sets `E1...En`; each relationship in `R` involves entities `e1 = E1, ... en = En`
-  
-Entities are represented by rectangles; attributes by circles; and relationships by diamonds.
-
-![Employee-Departments ER Model]()
-  
+To address some frequently asked questions: it’s preferable to work in pairs if
+possible, but up to you; you should use the language with which you’re most
+comfortable; your instructor will be more than happy to provide detailed code
+review, but this is optional; and, we will often start by going around the room
+to discuss progress and difficulties encountered.
